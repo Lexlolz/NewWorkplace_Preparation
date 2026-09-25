@@ -1,0 +1,28 @@
+name: Alap ellenorzes
+
+on: [push, pull_request]
+
+jobs:
+  ellenorzes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kod letoltese
+        uses: actions/checkout@v4
+
+      - name: README megletenek ellenorzese
+        run: |
+          if [ -f README.md ]; then
+            echo "OK: README.md megvan"
+          else
+            echo "HIBA: hianyzik a README.md"
+            exit 1
+          fi
+
+      - name: Verziofajl formatumanak ellenorzese
+        run: |
+          if grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$' VERSION; then
+            echo "OK: a verzio semver formatumu"
+          else
+            echo "HIBA: a VERSION fajl nem MAJOR.MINOR.PATCH formatumu"
+            exit 1
+          fi
